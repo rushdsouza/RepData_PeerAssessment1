@@ -7,7 +7,7 @@ output:
 
 
 ## Loading and preprocessing the data
-```{r echo = TRUE}
+```{r one, echo = TRUE}
 ### 1. Load the data (i.e. read.csv())
 activity <- read.csv("activity.csv", header=TRUE)
 
