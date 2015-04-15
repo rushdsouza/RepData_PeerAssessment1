@@ -9,7 +9,9 @@ output:
 ## Loading and preprocessing the data
 ```{r one, echo = TRUE, results='markup'}
 activity <- read.csv("activity.csv", header=TRUE)
+activity
 activity1 <- na.omit(activity)
+activity1
 ```
 
 ## What is mean total number of steps taken per day?
