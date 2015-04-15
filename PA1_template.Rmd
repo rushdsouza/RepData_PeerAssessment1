@@ -7,7 +7,7 @@ output:
 
 
 ## Loading and preprocessing the data
-```{r one, echo = TRUE}
+```{r one, echo = TRUE,results='asis'}
 activity <- read.csv("activity.csv", header=TRUE)
 View(activity)
 activity1 <- na.omit(activity)
