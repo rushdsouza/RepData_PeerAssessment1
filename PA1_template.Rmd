@@ -7,12 +7,8 @@ output:
 
 
 ## Loading and preprocessing the data
-```{r one, echo = TRUE}
-### 1. Load the data (i.e. read.csv())
+```{r one, echo = TRUE, results='markup'}
 activity <- read.csv("activity.csv", header=TRUE)
-
-### 2. Process/transform the data (if necessary) into a format suitable for your analysis
-### Remove the rows with NA in them 
 activity1 <- na.omit(activity)
 ```
 
