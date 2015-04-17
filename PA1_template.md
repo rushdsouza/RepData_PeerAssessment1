@@ -9,23 +9,25 @@ output:
 
 
 ## Loading and preprocessing the data
-```{r one, echo = TRUE,results='asis'}
+
+```r
 # Load the data using read.csv
 activity <- read.csv("activity.csv", header=TRUE)
 # Eliminate observations that contain NA in any variable
 activity1 <- na.omit(activity)
 ```
 
-Total no of rows in the original dataset(activity) is **`r nrow(activity)`**
+Total no of rows in the original dataset(activity) is **17568**
 
-Total no of rows without missing values(NA) in the data set(activity1) is **`r nrow(activity1)`**
+Total no of rows without missing values(NA) in the data set(activity1) is **15264**
 
-There are **`r length(unique(na.omit(activity[is.na(activity),]$date)))`** dates with missing values(NA) for the variable, steps at all intervals(0 to 2355). The dates are :  **`r unique(na.omit(activity[is.na(activity),]$date))`**
+There are **8** dates with missing values(NA) for the variable, steps at all intervals(0 to 2355). The dates are :  **2012-10-01, 2012-10-08, 2012-11-01, 2012-11-04, 2012-11-09, 2012-11-10, 2012-11-14, 2012-11-30**
 
 
 ## What is mean total number of steps taken per day?
 
-```{r two, echo = TRUE,results='asis'}
+
+```r
 # Calculate the total number of steps taken per day
 activity2 <- with(activity1, aggregate(steps,by=list(date=date), sum))
 # Plot the histogram of total number of steps taken each day
@@ -36,14 +38,17 @@ hist(activity2$x, breaks=20, xlim=c(0, 22000), plot=TRUE,
 abline(v = as.integer(mean(activity2$x)), col = "red", lwd = 2)
 ```
 
-Mean of the total number of steps taken per day( shown as a red vertical line in the histogram above): **`r as.integer(mean(activity2$x))`**
+![plot of chunk two](figure/two-1.png) 
 
-Median of the total number of steps taken per day: **`r as.integer(median(activity2$x))`**
+Mean of the total number of steps taken per day( shown as a red vertical line in the histogram above): **10766**
+
+Median of the total number of steps taken per day: **10765**
 
 
 ## What is the average daily activity pattern?
 
-```{r three, echo = TRUE,results='asis'}
+
+```r
 # Calculate the mean of the total number of steps taken per interval
 activity3 <- with(activity1, aggregate(steps,by=list(interval=interval), mean))
 # Add a variable,meansteps to store the rounded value of the steps per interval
@@ -56,16 +61,19 @@ plot(activity3$interval, activity3$x, type="l", xlab="5-minute Interval",
 abline(v = activity3[activity3$x == max(activity3$x), ]$interval, col = "red", lwd = 2)
 ```
 
-The 5-minute interval, **`r activity3[activity3$x == max(activity3$x), ]$interval`**  on average across all the days in the dataset, contains the maximum number of steps(  shown as a red vertical line in the plot above)
+![plot of chunk three](figure/three-1.png) 
+
+The 5-minute interval, **835**  on average across all the days in the dataset, contains the maximum number of steps(  shown as a red vertical line in the plot above)
 
 
 ## Imputing missing values
 
 ### Strategy: Impute the missing values with mean of valid values for that interval.
 
-Total number of missing values(NA) in the original dataset is: **`r nrow(activity[is.na(activity),])`**
+Total number of missing values(NA) in the original dataset is: **2304**
 
-```{r four, echo = TRUE,results='asis', message=FALSE, warning=FALSE}
+
+```r
 suppressWarnings(suppressMessages(library("knitr")))
 if (!require("plyr")) {
 suppressWarnings(suppressMessages(install.packages("plyr")))
@@ -115,9 +123,11 @@ par(mfrow = c(2, 1), mar = c(4, 4, 2, 1))
 }
 ```
 
-Mean of the total number of steps taken per day( shown as a red vertical line in the histogram above): **`r as.integer(mean(activity4$x))`**
+![plot of chunk four](figure/four-1.png) 
 
-Median of the total number of steps taken per day: **`r as.integer(median(activity4$x))`**
+Mean of the total number of steps taken per day( shown as a red vertical line in the histogram above): **10766**
+
+Median of the total number of steps taken per day: **10766**
 
 **Do these values differ from the estimates from the first part of the assignment?**
 
@@ -125,15 +135,15 @@ The estimates are similar in terms of the mean and median values of the total nu
 
 **What is the impact of imputing missing data on the estimates of the total daily number of steps?**
 
-There are **`r as.integer(sum(activity4$x)) - as.integer(sum(activity2$x))`** additonal steps as a result of imputing the missing data. There are **`r as.integer((as.integer(sum(activity4$x)) - as.integer(sum(activity2$x)))/8)`** steps for missing step values for the  dates, **`r unique(na.omit(activity[is.na(activity),]$date))`**
+There are **86129** additonal steps as a result of imputing the missing data. There are **10766** steps for missing step values for the  dates, **2012-10-01, 2012-10-08, 2012-11-01, 2012-11-04, 2012-11-09, 2012-11-10, 2012-11-14, 2012-11-30**
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
-```{r five, echo = TRUE,results='asis', message=FALSE, warning=FALSE}
+
+```r
 # wday <- c("Mon", "Tue", "Wed", "Thu", "Fri")
 activityFinal <- transform(activityFinal, date1=as.Date(activityFinal$date, format="%Y-%m-%d",tz=""))                 
 
 activityFinal <- cbind(activityFinal,daytype = ifelse((weekdays(activityFinal$date1,abbreviate=TRUE)=="Sat") 
 | (weekdays(activityFinal$date1, abbreviate=TRUE) == "Sun"), "weekend", "weekday")) 
-
 ```
